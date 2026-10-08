@@ -96,7 +96,9 @@ export const siteRouter = appRouterFactory({
       await db.createContactMessage({ ...message, ip: ip.slice(0, 64) });
       // Not awaited: the visitor shouldn't wait on a third-party API for a
       // message that is already saved.
-      void notifyContactMessage(message);
+      void contactDetails().then(details =>
+        notifyContactMessage(message, details.email)
+      );
       return { success: true };
     }),
 

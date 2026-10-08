@@ -7,24 +7,31 @@
  * than surfaced to the visitor: their message was received either way.
  *
  * Env: RESEND_API_KEY, RESEND_FROM_EMAIL (a sender on a domain verified in
- * Resend), CONTACT_TO_EMAIL (where notifications go).
+ * Resend). Notifications go to the contact email the site shows (Contact
+ * details in the admin), so changing it there changes both at once.
+ * CONTACT_TO_EMAIL, when set, overrides that recipient.
  */
 const RESEND_API_KEY = process.env.RESEND_API_KEY ?? "";
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "";
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "";
 
 export function isMailConfigured(): boolean {
-  return Boolean(RESEND_API_KEY && RESEND_FROM_EMAIL && CONTACT_TO_EMAIL);
+  return Boolean(RESEND_API_KEY && RESEND_FROM_EMAIL);
 }
 
-export async function notifyContactMessage(msg: {
-  name: string;
-  email: string;
-  phone: string | null;
-  topic: string | null;
-  message: string;
-}): Promise<void> {
-  if (!isMailConfigured()) return;
+export async function notifyContactMessage(
+  msg: {
+    name: string;
+    email: string;
+    phone: string | null;
+    topic: string | null;
+    message: string;
+  },
+  /** The site's public contact email; used unless CONTACT_TO_EMAIL is set. */
+  siteEmail: string
+): Promise<void> {
+  const to = CONTACT_TO_EMAIL || siteEmail;
+  if (!isMailConfigured() || !to) return;
 
   const text = [
     `From: ${msg.name} <${msg.email}>`,
@@ -45,7 +52,7 @@ export async function notifyContactMessage(msg: {
       },
       body: JSON.stringify({
         from: RESEND_FROM_EMAIL,
-        to: [CONTACT_TO_EMAIL],
+        to: [to],
         reply_to: msg.email,
         subject: `Gas Light contact: ${msg.topic ?? "New message"} — ${msg.name}`,
         text,

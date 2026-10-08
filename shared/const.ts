@@ -15,7 +15,7 @@ export const BRAND_TAGLINE = "Premium Gas Only";
  */
 export const DEFAULT_CONTACT = {
   company: "Gas Light Industries",
-  email: "info@gaslightind.com",
+  email: "support@gaslightbrand.com",
   phone: "(386) 281-5890",
   address: "6821 Cow Girl Way, Billings, MT 59106",
   instagram: "",

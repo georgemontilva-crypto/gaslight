@@ -32,10 +32,10 @@ export default function AdminMessages() {
     <AdminLayout title="Messages">
       {messages.data && !messages.data.mailConfigured && (
         <p className="mb-5 text-sm text-white/45">
-          Messages are saved here only. To also get each one by email, set{" "}
-          <span className="font-mono text-white/70">RESEND_API_KEY</span>,{" "}
-          <span className="font-mono text-white/70">RESEND_FROM_EMAIL</span> and{" "}
-          <span className="font-mono text-white/70">CONTACT_TO_EMAIL</span> in
+          Messages are saved here only. To also get each one at the email under
+          Contact details, set{" "}
+          <span className="font-mono text-white/70">RESEND_API_KEY</span> and{" "}
+          <span className="font-mono text-white/70">RESEND_FROM_EMAIL</span> in
           Railway.
         </p>
       )}

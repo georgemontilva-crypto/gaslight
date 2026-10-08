@@ -54,7 +54,7 @@ GAS LIGHT, y `favicon.svg` la llama.
 | `R2_PUBLIC_URL` | URL pública del bucket, sin barra final | Para subir archivos |
 | `RESEND_API_KEY` | Aviso por email de los mensajes de contacto | No |
 | `RESEND_FROM_EMAIL` | Remitente en un dominio verificado en Resend | No |
-| `CONTACT_TO_EMAIL` | A dónde llegan los avisos | No |
+| `CONTACT_TO_EMAIL` | Solo si los avisos deben ir a otro correo; si no, llegan al email de **Contact details** (por defecto support@gaslightbrand.com) | No |
 | `PORT` | Lo inyecta Railway | No |
 
 Sin las de R2 el sitio funciona igual; lo único que no se puede es **subir**
