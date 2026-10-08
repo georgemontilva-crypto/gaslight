@@ -21,9 +21,12 @@ function normalize(value: string): string {
  * A product matches on its strain or line name; otherwise only the reports
  * whose batch or title match are kept. Searching a batch number therefore
  * narrows a strain with five batches down to the one in the visitor's hand.
+ *
+ * With no search every product is listed, reports or not: one still waiting
+ * on its certificate shows "Coming soon" instead of disappearing.
  */
 function filterProduct(product: ReportProduct, query: string): ReportProduct | null {
-  if (!query) return product.reports.length > 0 ? product : null;
+  if (!query) return product;
   const byName = normalize(`${product.name} ${product.collection ?? ""}`).includes(query);
   if (byName) return product;
   const reports = product.reports.filter(r =>
@@ -42,7 +45,6 @@ export default function LabReports() {
 
   const data = trpc.catalog.publicReports.useQuery();
   const all = data.data ?? [];
-  const totalReports = all.reduce((sum, p) => sum + p.reports.length, 0);
   const q = normalize(query);
 
   const matches = all
@@ -92,7 +94,7 @@ export default function LabReports() {
             <p className="text-ash">
               The reports couldn't be loaded. Reload the page to try again.
             </p>
-          ) : totalReports === 0 && !q ? (
+          ) : groups.length === 0 && !q ? (
             <EmptyState title="Reports are on their way">
               The certificates of analysis are being uploaded. If you need one
               now,{" "}
@@ -153,16 +155,14 @@ export default function LabReports() {
                             ))}
                           </ul>
                         ) : (
-                          <p className="self-center text-ash">
-                            Not posted yet.{" "}
-                            <Link
-                              href="/contact"
-                              className="underline underline-offset-4 hover:text-bone"
-                            >
-                              Ask us for it
-                            </Link>
-                            .
-                          </p>
+                          <div className="flex flex-col gap-3 self-center sm:flex-row sm:items-center sm:justify-between">
+                            <p className="text-ash">
+                              The certificate for this strain is on its way.
+                            </p>
+                            <span className="tag shrink-0 self-start !border-ember !text-[0.78rem] sm:self-auto">
+                              Coming soon
+                            </span>
+                          </div>
                         )}
                       </li>
                     ))}
