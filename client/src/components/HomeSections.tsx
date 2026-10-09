@@ -27,7 +27,7 @@ export function BrandSection({
   video: PublicVideo | null;
 }) {
   const details = trpc.site.contactDetails.useQuery().data ?? DEFAULT_CONTACT;
-  // "Billings, MT" out of "6821 Cow Girl Way, Billings, MT 59106": the street
+  // "Casper, WY" out of "312 W. 2nd St #1241, Casper, WY 82601": the street
   // belongs on the contact page, the town is what says where the brand is from.
   const town = details.address.split(",").slice(1).join(",").replace(/\d{5}.*$/, "").trim();
 
