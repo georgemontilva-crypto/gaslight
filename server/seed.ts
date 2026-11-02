@@ -21,6 +21,8 @@ type SeedProduct = {
   name: string;
   strain: Strain;
   accent: string;
+  /** Solo si el slug no sale del nombre tal cual (ver Grand Daddy Purple). */
+  slug?: string;
 };
 
 type SeedLine = {
@@ -28,7 +30,7 @@ type SeedLine = {
   collection: string;
   slugPrefix: string;
   subtitle: string;
-  /** La línea trae una segunda foto por cepa: `<slug>-box.webp`. */
+  /** La línea trae una segunda foto por cepa: el display, `<slug>-box.webp`. */
   hasBoxShot?: boolean;
   describe: (name: string, strain: Strain) => string;
   facts: string[];
@@ -44,71 +46,79 @@ const COMPLIANCE_FACTS = [
 const article = (strain: Strain) =>
   strain === "hybrid" ? "A hybrid" : strain === "indica" ? "An indica" : "A sativa";
 
-const CATALOG: SeedLine[] = [
+/**
+ * El catálogo tal como sale en los empaques de nov 2026: todo en pouch, sin
+ * frascos ni tubos. drizzle/0001_pouch_catalog.sql lleva estos mismos datos a
+ * una base que ya tenía el catálogo anterior; si se cambia algo aquí que deba
+ * llegar a producción, hace falta otra migración.
+ */
+export const CATALOG: SeedLine[] = [
   {
     collection: "THC Gusherz",
     slugPrefix: "gusherz",
-    subtitle: "10 count, 2.0G per pre-roll",
+    subtitle: "2 per pouch, 2.0G each",
+    hasBoxShot: true,
     describe: (name, strain) =>
-      `${name} as a hash hole: indoor CBD/CBG flower rolled around a core of CBD hash badder, with natural terpene flavoring. ${article(strain)}. Ten two-gram pre-rolls to a tube, 20 grams in all.`,
+      `${name} as a hash hole: indoor CBD/CBG flower rolled around a core of CBD hash badder, with natural terpene flavoring. ${article(strain)}. Two 2.0-gram pre-rolls to a pouch, ten pouches to a display.`,
     facts: [
-      "Count: 10 pre-rolls",
+      "Per pouch: 2 pre-rolls",
       "Per pre-roll: 2.0 G",
-      "Net weight: 20 G (0.71 oz)",
+      "Net weight: 4.0 G per pouch (0.141 oz)",
+      "Display: 10 pouches, 20 G (0.705 oz)",
       "Ingredients: Indoor CBD/CBG flower, CBD hash badder, natural terpene flavoring",
       ...COMPLIANCE_FACTS,
     ],
     products: [
-      { name: "Blue Dream", strain: "hybrid", accent: "#19c8f0" },
-      { name: "White Runtz", strain: "hybrid", accent: "#f05aa8" },
-      { name: "Green Crack", strain: "sativa", accent: "#dfe32b" },
-      { name: "Sour Diesel", strain: "sativa", accent: "#f2c935" },
-      { name: "Granddaddy Purple", strain: "indica", accent: "#b584f5" },
-      { name: "Northern Lights", strain: "indica", accent: "#f224b8" },
+      { name: "Blue Dream", strain: "hybrid", accent: "#1fb6f0" },
+      { name: "White Runtz", strain: "hybrid", accent: "#f1ece4" },
+      { name: "Green Crack", strain: "sativa", accent: "#42d13b" },
+      { name: "Sour Diesel", strain: "sativa", accent: "#f2701f" },
+      {
+        name: "Grand Daddy Purple",
+        slug: "granddaddy-purple",
+        strain: "indica",
+        accent: "#a77bf0",
+      },
+      { name: "Northern Lights", strain: "indica", accent: "#ec2b33" },
     ],
   },
   {
-    collection: "THC Melted Diamond",
-    slugPrefix: "melted-diamond",
-    subtitle: "25 count, 1.5G per pre-roll",
+    collection: "Diamond Infused",
+    slugPrefix: "diamond-infused",
+    subtitle: "3 per pouch, 1.5G each",
+    hasBoxShot: true,
     describe: (name, strain) =>
-      `${name} in the Melted Diamond line: indoor exotic flower finished with melted diamonds. ${article(strain)}. Twenty-five 1.5-gram pre-rolls to a jar, 37.5 grams in all.`,
+      `${name}, diamond infused: indoor exotic flower infused with diamonds. ${article(strain)}. Three 1.5-gram pre-rolls to a pouch, ten pouches to a display.`,
     facts: [
-      "Count: 25 pre-rolls",
+      "Per pouch: 3 pre-rolls",
       "Per pre-roll: 1.5 G",
-      "Net weight: 37.5 G (1.32 oz)",
+      "Net weight: 4.5 G per pouch (0.15 oz)",
+      "Display: 10 pouches, 45 G (1.58 oz)",
       ...COMPLIANCE_FACTS,
     ],
     products: [
-      { name: "Grease Monkey", strain: "hybrid", accent: "#ef2233" },
-      { name: "Permanent Marker", strain: "hybrid", accent: "#16d163" },
-      { name: "Durban Poison", strain: "sativa", accent: "#f4532f" },
-      { name: "Super Lemon Haze", strain: "sativa", accent: "#e8ea22" },
-      { name: "Slurricane", strain: "indica", accent: "#a67bf0" },
-      { name: "Blue Zushi", strain: "indica", accent: "#2dd3e4" },
+      { name: "Grease Monkey", strain: "hybrid", accent: "#ec2b33" },
+      { name: "Permanent Marker", strain: "hybrid", accent: "#f1ece4" },
+      { name: "Durban Poison", strain: "sativa", accent: "#42d13b" },
+      { name: "Super Lemon Haze", strain: "sativa", accent: "#f2e21e" },
+      { name: "Slurricane", strain: "indica", accent: "#a77bf0" },
+      { name: "Blue Zushi", strain: "indica", accent: "#2bb8e8" },
     ],
   },
   {
     collection: "THC Pre-Rolls",
     slugPrefix: "pre-rolls",
-    subtitle: "40 count, 1.25G per pre-roll",
-    hasBoxShot: true,
+    subtitle: "Single 1.25G pre-roll",
     describe: (name, strain) =>
-      `${name}, rolled straight: indoor exotic flower and nothing else. ${article(strain)}. Comes as a jar of forty 1.25-gram pre-rolls, or as a display box of forty single pouches. 50 grams either way.`,
-    facts: [
-      "Count: 40 pre-rolls",
-      "Per pre-roll: 1.25 G",
-      "Net weight: 50 G (1.76 oz)",
-      "Packs: 40-count jar, or display box of 40 single pouches",
-      ...COMPLIANCE_FACTS,
-    ],
+      `${name}, rolled straight: indoor exotic flower and nothing else. ${article(strain)}. One 1.25-gram pre-roll to a pouch.`,
+    facts: ["Per pouch: 1 pre-roll", "Net weight: 1.25 G (0.044 oz)", ...COMPLIANCE_FACTS],
     products: [
       { name: "Strawberry Cough", strain: "sativa", accent: "#ee2030" },
-      { name: "Jack Herer", strain: "sativa", accent: "#6fd9e8" },
-      { name: "White Runtz", strain: "hybrid", accent: "#f1e9dc" },
+      { name: "Jack Herer", strain: "sativa", accent: "#a9e6ee" },
+      { name: "King Louie", strain: "sativa", accent: "#cfe52a" },
+      { name: "Black Truffle", strain: "sativa", accent: "#e6cc8f" },
+      { name: "White Runtz", strain: "hybrid", accent: "#f1ece4" },
       { name: "Rainbow Belts", strain: "hybrid", accent: "#f04bb0" },
-      { name: "King Louie", strain: "indica", accent: "#cfe52a" },
-      { name: "Black Truffle", strain: "indica", accent: "#e2b56c" },
     ],
   },
 ];
@@ -120,27 +130,18 @@ function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export async function seedCatalog(): Promise<void> {
-  let created = 0;
-
-  for (const line of CATALOG) {
+/** Cada cepa como la fila que se guarda, en el orden del sitio. */
+export function catalogRows() {
+  return CATALOG.flatMap(line => {
     // El orden de las líneas sale del mismo sitio que usa la web pública, para
     // que el panel y el sitio no puedan quedar ordenados distinto.
     const lineIndex = Math.max(
       0,
       LINES.findIndex(l => l.name === line.collection)
     );
-
-    for (let i = 0; i < line.products.length; i++) {
-      const p = line.products[i];
-      const slug = `${line.slugPrefix}-${slugify(p.name)}`;
-
-      if (await db.getProductBySlug(slug)) {
-        console.log(`= ${line.collection} / ${p.name} (already present)`);
-        continue;
-      }
-
-      await db.createProduct({
+    return line.products.map((p, i) => {
+      const slug = `${line.slugPrefix}-${p.slug ?? slugify(p.name)}`;
+      return {
         slug,
         name: p.name,
         collection: line.collection,
@@ -156,12 +157,22 @@ export async function seedCatalog(): Promise<void> {
         altImageKey: null,
         sortOrder: (lineIndex + 1) * 100 + i,
         published: true,
-      });
-      created++;
-      console.log(`+ ${line.collection} / ${p.name}`);
-    }
-  }
+      };
+    });
+  });
+}
 
+export async function seedCatalog(): Promise<void> {
+  let created = 0;
+  for (const row of catalogRows()) {
+    if (await db.getProductBySlug(row.slug)) {
+      console.log(`= ${row.collection} / ${row.name} (already present)`);
+      continue;
+    }
+    await db.createProduct(row);
+    created++;
+    console.log(`+ ${row.collection} / ${row.name}`);
+  }
   console.log(`[Seed] Done. ${created} product(s) added.`);
 }
 

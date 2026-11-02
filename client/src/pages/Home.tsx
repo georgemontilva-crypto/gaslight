@@ -54,29 +54,29 @@ type Group = ReturnType<typeof groupByLine<CatalogProduct>>[number];
    one from each line, and each is the way into its line. */
 
 function Hero({ groups }: { groups: Group[] }) {
-  const face = (group: Group | undefined, height: string, box?: boolean) => {
-    const p = group?.items[0];
-    if (!group || !p) return null;
+  /* One stand per line, showing its first strains' pouches. The singles are
+     narrow, so that line fans out three of them where the others show one. */
+  const face = (group: Group | undefined, height: string, count = 1) => {
+    if (!group || group.items.length === 0) return null;
+    const items = group.items.slice(0, count);
     return {
       line: group.name,
       slug: lineSlug(group.name),
-      accent: p.accentColor,
-      // The pre-rolls show their display box here: three different
-      // silhouettes say "three lines" before any label is read.
-      src: (box ? p.altImageUrl : null) ?? p.imageUrl,
+      accent: items[0].accentColor,
+      srcs: items.map(p => p.imageUrl).filter((s): s is string => Boolean(s)),
       height,
     };
   };
   type Face = NonNullable<ReturnType<typeof face>>;
   const present = (f: Face | null): f is Face => f !== null;
 
-  // Jar and tube stand to the left of the lockup, the display box to the
+  // Two pouches stand to the left of the lockup, the fan of singles to the
   // right. On a phone the same three line up in one row under it.
   const left = [
     face(groups[1], "clamp(128px, 19.4vw, 300px)"),
     face(groups[0], "clamp(146px, 22vw, 340px)"),
   ].filter(present);
-  const right = [face(groups[2], "clamp(118px, 19.6vw, 294px)", true)].filter(present);
+  const right = [face(groups[2], "clamp(124px, 20vw, 300px)", 3)].filter(present);
 
   return (
     <section className="char relative isolate overflow-hidden border-b border-rule">
@@ -99,7 +99,7 @@ function Hero({ groups }: { groups: Group[] }) {
             />
           </h1>
           <p className="mx-auto mt-6 max-w-[34rem] text-balance text-lg text-bone/90 md:text-xl">
-            Indoor exotic, rolled three ways: hash holes, melted diamond
+            Indoor exotic, rolled three ways: hash holes, diamond-infused
             pre-rolls and straight flower. Every batch is lab tested.
           </p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -129,7 +129,7 @@ function HeroStand({
   items,
   className,
 }: {
-  items: { line: string; slug: string; accent: string | null; src: string | null; height: string }[];
+  items: { line: string; slug: string; accent: string | null; srcs: string[]; height: string }[];
   className?: string;
 }) {
   if (items.length === 0) return null;
@@ -145,14 +145,22 @@ function HeroStand({
           >
             <span className="relative block">
               <span className="glow absolute -inset-x-[35%] -bottom-[8%] top-[45%]" aria-hidden />
-              {item.src && (
-                <img
-                  src={item.src}
-                  alt=""
-                  style={{ height: item.height }}
-                  className="relative w-auto max-w-none drop-shadow-[0_18px_24px_rgba(0,0,0,0.8)] transition-transform duration-300 ease-out group-hover:-translate-y-2"
-                />
-              )}
+              <span className="relative flex items-end transition-transform duration-300 ease-out group-hover:-translate-y-2">
+                {item.srcs.map((src, i) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt=""
+                    style={{ height: item.height }}
+                    // Overlapped like a hand of cards, the middle one in front.
+                    className={cn(
+                      "relative w-auto max-w-none drop-shadow-[0_18px_24px_rgba(0,0,0,0.8)]",
+                      i > 0 && "-ml-[14%]",
+                      item.srcs.length === 3 && i === 1 && "z-10 -translate-y-[4%]"
+                    )}
+                  />
+                ))}
+              </span>
             </span>
             <span className="tag mt-4 justify-center !whitespace-normal !px-[0.7em] text-center !text-[0.56rem] !tracking-[0.1em] group-hover:bg-accent group-hover:text-black sm:!px-[0.9em] sm:!text-[0.68rem] sm:!tracking-[0.14em]">
               {item.line.replace(/^THC\s+/i, "")}

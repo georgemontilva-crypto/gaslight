@@ -7,7 +7,7 @@ panel para cargarlos.
 |---|---|
 | `/` | Home: logo y los tres empaques entre las llamas, la marca (con el video destacado), las tres líneas, reels, lo que dice la etiqueta, buscador de reportes y preguntas |
 | `/products` | Todas las cepas, con filtro por línea y por tipo (indica / sativa / hybrid) |
-| `/products/:slug` | Una cepa: foto (o dos: frasco y display box), descripción, botón a su reporte y el resto de la línea |
+| `/products/:slug` | Una cepa: foto del pouch (y del display, en Gusherz y Diamond Infused), descripción, botón a su reporte y el resto de la línea |
 | `/lab-reports` | Reportes de todos los lotes, con búsqueda por cepa o número de lote |
 | `/about` | About Us |
 | `/contact` | Contact Us: formulario + datos de la empresa |
@@ -118,7 +118,7 @@ botón **Repair file links** de `/admin/lab-reports` las reescribe.
   subir el PDF. Una cepa puede tener varios reportes, uno por lote.
 - **Products**: nombre, línea, tipo, color de etiqueta, formato, descripción
   y foto. Hay una **segunda foto** opcional para el otro empaque del mismo
-  producto (los THC Pre-Rolls vienen en frasco y en display box). Las fotos se
+  producto (en THC Gusherz y Diamond Infused es el display de 10 pouches). Las fotos se
   ven mejor en PNG o WebP con fondo transparente.
 - **Videos**: clips verticales (9:16) en MP4. El marcado con estrella sale en
   grande junto a la presentación de la marca, justo debajo del inicio del Home;
@@ -174,7 +174,7 @@ El siguiente deploy lo aplica solo.
 
 | | |
 |---|---|
-| `client/public/products/` | Las 24 fotos de producto que vienen con el sitio (18 cepas + 6 display box) |
+| `client/public/products/` | Las 30 fotos de producto que vienen con el sitio (18 pouches + 12 displays) |
 | `client/public/brand/` | Logo vectorial (SVG), favicon, llamas y madera carbonizada del empaque |
 | `client/src/index.css` | Sistema visual: tipos de la etiqueta, recuadros, botones, fuego |
 | `client/src/components/Fire.tsx` | Llamas, brasas y la regla dorada |

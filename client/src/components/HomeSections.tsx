@@ -107,7 +107,7 @@ const MARKS = [
   {
     icon: Lock,
     term: "Child resistant",
-    detail: "Tubes, jars and pouches all close child-resistant.",
+    detail: "Every pouch closes child-resistant.",
   },
 ];
 

@@ -19,7 +19,7 @@ const LABEL = [
     "Texas compliant",
     "Meets the 2018 Farm Bill and Texas Agriculture Code § 122.153.",
   ],
-  ["Child resistant", "Tubes, jars and pouches all close child-resistant."],
+  ["Child resistant", "Every pouch closes child-resistant."],
   ["21+ only", "Our products are for adults, and this site is too."],
 ];
 
@@ -33,7 +33,7 @@ export default function About() {
     <PublicLayout>
       <PageHeader title="About us">
         {details.company} makes indoor exotic hemp pre-rolls: hash holes,
-        melted diamonds and straight flower, lab tested by the batch.
+        diamond-infused pre-rolls and straight flower, lab tested by the batch.
       </PageHeader>
 
       <div className="container py-14 md:py-20">

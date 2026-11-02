@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
  *
  * The cut-outs are black packs with black lids, so on a black page they need
  * the strain's colour behind them to have an edge at all — the halo is what
- * makes the pack readable, not decoration. Tubes, jars and boxes have very
+ * makes the pack readable, not decoration. Pouches and display boxes have very
  * different proportions, so every shot is fitted to the bottom of the same
  * frame: in a row they share a floor instead of floating at different heights.
  */

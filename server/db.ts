@@ -339,7 +339,7 @@ export async function getDashboardStats() {
       .where(eq(contactMessages.handled, false))
   );
   /* Products on the public site with no published report: the number that
-     tells the admin what is still missing before a jar's QR can be trusted. */
+     tells the admin what is still missing before a pack's QR can be trusted. */
   const withReport = await count(
     db
       .select({ c: sql<number>`count(distinct ${labReports.productId})` })

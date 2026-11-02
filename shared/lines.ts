@@ -18,23 +18,22 @@ export const LINES: LineInfo[] = [
   {
     name: "THC Gusherz",
     slug: "gusherz",
-    format: "Hash hole pre-rolls, 10 count, 2.0G each",
+    format: "Hash hole pre-rolls, 2 per pouch, 2.0G each",
     blurb:
-      "Hash holes: indoor flower rolled around a core of hash badder. Ten two-gram pre-rolls to a tube.",
+      "Hash holes: indoor flower rolled around a core of hash badder. Two 2.0-gram pre-rolls to a pouch, ten pouches to a display.",
   },
   {
-    name: "THC Melted Diamond",
-    slug: "melted-diamond",
-    format: "Infused pre-rolls, 25 count, 1.5G each",
+    name: "Diamond Infused",
+    slug: "diamond-infused",
+    format: "THC pre-rolls, 3 per pouch, 1.5G each",
     blurb:
-      "Indoor exotic flower finished with melted diamonds. Twenty-five 1.5-gram pre-rolls to a jar.",
+      "Indoor exotic flower infused with diamonds. Three 1.5-gram pre-rolls to a pouch, ten pouches to a display.",
   },
   {
     name: "THC Pre-Rolls",
     slug: "pre-rolls",
-    format: "Indoor exotic pre-rolls, 40 count, 1.25G each",
-    blurb:
-      "Straight indoor exotic flower, 1.25 grams a roll. Forty to a jar, or forty single pouches in a display box.",
+    format: "Indoor exotic, single 1.25G pre-roll",
+    blurb: "Straight indoor exotic flower, one 1.25-gram pre-roll to a pouch.",
   },
 ];
 
