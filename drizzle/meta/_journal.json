@@ -15,6 +15,13 @@
       "when": 1793653684088,
       "tag": "0001_pouch_catalog",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1793654877424,
+      "tag": "0002_lab_reports",
+      "breakpoints": true
     }
   ]
 }

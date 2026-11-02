@@ -123,6 +123,152 @@ export const CATALOG: SeedLine[] = [
   },
 ];
 
+type SeedReport = {
+  /** Slug del producto al que pertenece. */
+  slug: string;
+  batch: string;
+  /** Fecha de finalización del reporte (YYYY-MM-DD). */
+  testedOn: string;
+  sizeBytes: number;
+  published?: boolean;
+};
+
+/**
+ * Los certificados de ACS Laboratory, uno por cepa. El PDF viaja con el sitio
+ * en client/public/coa/<slug>.pdf, así que no tiene clave de R2: borrar el
+ * reporte desde el panel quita la fila, y reemplazar el PDF lo sube a R2.
+ * drizzle/0002_lab_reports.sql carga esta misma lista en una base existente.
+ */
+export const LAB_REPORTS: SeedReport[] = [
+  {
+    slug: "diamond-infused-blue-zushi",
+    batch: "GL090426BZ",
+    testedOn: "2026-09-16",
+    sizeBytes: 1249490,
+  },
+  {
+    slug: "diamond-infused-durban-poison",
+    batch: "GL090426DP",
+    testedOn: "2026-09-16",
+    sizeBytes: 1249364,
+  },
+  {
+    slug: "diamond-infused-grease-monkey",
+    batch: "GL090426GM",
+    testedOn: "2026-09-16",
+    sizeBytes: 1260420,
+  },
+  {
+    slug: "diamond-infused-permanent-marker",
+    batch: "GL090426PM",
+    testedOn: "2026-09-16",
+    sizeBytes: 1251501,
+  },
+  {
+    slug: "diamond-infused-slurricane",
+    batch: "GL090426SR",
+    testedOn: "2026-09-16",
+    sizeBytes: 1258923,
+  },
+  {
+    slug: "diamond-infused-super-lemon-haze",
+    batch: "GL090426SLH",
+    testedOn: "2026-09-16",
+    sizeBytes: 1245366,
+    // Delta-9 THC 0.3207% en el reporte: por encima del límite de 0.3%.
+    // Se carga oculto; se publica desde el panel si el cliente lo aprueba.
+    published: false,
+  },
+  {
+    slug: "gusherz-blue-dream",
+    batch: "GL090426BD",
+    testedOn: "2026-10-05",
+    sizeBytes: 900885,
+  },
+  {
+    slug: "gusherz-granddaddy-purple",
+    batch: "GL090426GP",
+    testedOn: "2026-10-06",
+    sizeBytes: 908050,
+  },
+  {
+    slug: "gusherz-green-crack",
+    batch: "GL090426GC",
+    testedOn: "2026-10-06",
+    sizeBytes: 905733,
+  },
+  {
+    slug: "gusherz-northern-lights",
+    batch: "GL090426NL",
+    testedOn: "2026-10-05",
+    sizeBytes: 912957,
+  },
+  {
+    slug: "gusherz-sour-diesel",
+    batch: "GL090426SD",
+    testedOn: "2026-10-06",
+    sizeBytes: 904338,
+  },
+  {
+    slug: "gusherz-white-runtz",
+    batch: "GL08142026",
+    testedOn: "2026-08-14",
+    sizeBytes: 1457978,
+  },
+  {
+    slug: "pre-rolls-black-truffle",
+    batch: "GL210826BT",
+    testedOn: "2026-10-06",
+    sizeBytes: 909696,
+  },
+  {
+    slug: "pre-rolls-jack-herer",
+    batch: "GL210826JH",
+    testedOn: "2026-10-05",
+    sizeBytes: 902669,
+  },
+  {
+    slug: "pre-rolls-king-louie",
+    batch: "GL210826KL",
+    testedOn: "2026-10-06",
+    sizeBytes: 908549,
+  },
+  {
+    slug: "pre-rolls-rainbow-belts",
+    batch: "GL210826RB",
+    testedOn: "2026-10-06",
+    sizeBytes: 912404,
+  },
+  {
+    slug: "pre-rolls-strawberry-cough",
+    batch: "GL210826SC",
+    testedOn: "2026-10-06",
+    sizeBytes: 913587,
+  },
+  {
+    slug: "pre-rolls-white-runtz",
+    batch: "GL210826WR",
+    testedOn: "2026-10-06",
+    sizeBytes: 915968,
+  },
+];
+
+export function labReportRows() {
+  return LAB_REPORTS.map(r => ({
+    slug: r.slug,
+    title: "Full panel COA",
+    batch: r.batch,
+    lab: "ACS Laboratory",
+    testedOn: r.testedOn,
+    fileUrl: `/coa/${r.slug}.pdf`,
+    fileKey: "",
+    fileName: `${r.slug}.pdf`,
+    sizeBytes: r.sizeBytes,
+    published: r.published ?? true,
+    sortOrder: 0,
+  }));
+}
+
 function slugify(input: string): string {
   return input
     .toLowerCase()
@@ -174,6 +320,19 @@ export async function seedCatalog(): Promise<void> {
     console.log(`+ ${row.collection} / ${row.name}`);
   }
   console.log(`[Seed] Done. ${created} product(s) added.`);
+
+  // Los reportes van después: necesitan el id del producto. Uno ya cargado
+  // (mismo producto y mismo lote) se deja como está.
+  let reports = 0;
+  for (const { slug, ...report } of labReportRows()) {
+    const product = await db.getProductBySlug(slug);
+    if (!product) continue;
+    const existing = await db.listLabReports(product.id);
+    if (existing.some(r => r.batch === report.batch)) continue;
+    await db.createLabReport({ productId: product.id, ...report });
+    reports++;
+  }
+  console.log(`[Seed] ${reports} lab report(s) added.`);
 }
 
 /**
