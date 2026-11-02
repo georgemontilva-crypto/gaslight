@@ -175,9 +175,8 @@ export const LAB_REPORTS: SeedReport[] = [
     batch: "GL090426SLH",
     testedOn: "2026-09-16",
     sizeBytes: 1245366,
-    // Delta-9 THC 0.3207% en el reporte: por encima del límite de 0.3%.
-    // Se carga oculto; se publica desde el panel si el cliente lo aprueba.
-    published: false,
+    // Delta-9 THC 0.3207% en el reporte, por encima de 0.3%. Publicado por
+    // decisión del cliente (ver drizzle/0003_publish_slh_report.sql).
   },
   {
     slug: "gusherz-blue-dream",
