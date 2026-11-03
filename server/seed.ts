@@ -109,9 +109,15 @@ export const CATALOG: SeedLine[] = [
     collection: "THC Pre-Rolls",
     slugPrefix: "pre-rolls",
     subtitle: "Single 1.25G pre-roll",
+    hasBoxShot: true,
     describe: (name, strain) =>
-      `${name}, rolled straight: indoor exotic flower and nothing else. ${article(strain)}. One 1.25-gram pre-roll to a pouch.`,
-    facts: ["Per pouch: 1 pre-roll", "Net weight: 1.25 G (0.044 oz)", ...COMPLIANCE_FACTS],
+      `${name}, rolled straight: indoor exotic flower and nothing else. ${article(strain)}. One 1.25-gram pre-roll to a pouch, forty pouches to a display.`,
+    facts: [
+      "Per pouch: 1 pre-roll",
+      "Net weight: 1.25 G per pouch (0.044 oz)",
+      "Display: 40 pouches, 50 G (1.76 oz)",
+      ...COMPLIANCE_FACTS,
+    ],
     products: [
       { name: "Strawberry Cough", strain: "sativa", accent: "#ee2030" },
       { name: "Jack Herer", strain: "sativa", accent: "#a9e6ee" },

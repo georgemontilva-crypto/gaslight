@@ -33,7 +33,8 @@ export const LINES: LineInfo[] = [
     name: "THC Pre-Rolls",
     slug: "pre-rolls",
     format: "Indoor exotic, single 1.25G pre-roll",
-    blurb: "Straight indoor exotic flower, one 1.25-gram pre-roll to a pouch.",
+    blurb:
+      "Straight indoor exotic flower, one 1.25-gram pre-roll to a pouch, forty pouches to a display.",
   },
 ];
 
